@@ -19,9 +19,8 @@ function safeUrl(url) {
   return /^https?:\/\//i.test(url || "") ? url : "";
 }
 
-function renderRow(item, index) {
+function renderRow(item) {
   const row = make("div", "row");
-  row.appendChild(make("div", "rank", String(index + 1)));
 
   const hasScore = item.score !== null && item.score !== undefined;
   row.appendChild(make("div", hasScore ? "score" : "score none", hasScore ? String(item.score) : "\u2013"));
@@ -66,7 +65,7 @@ async function load() {
       list.appendChild(make("div", "empty", "No items yet."));
       return;
     }
-    items.forEach((item, index) => list.appendChild(renderRow(item, index)));
+    items.forEach((item) => list.appendChild(renderRow(item)));
     meta.textContent = items.length + " items, updated " + timeAgo(data.updated);
   } catch (error) {
     list.appendChild(make("div", "empty", "Could not load data/items.json."));

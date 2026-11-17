@@ -55,7 +55,7 @@ main { max-width: 1000px; margin: 0 auto; }
 
 .row {
   display: grid;
-  grid-template-columns: 34px 44px 1fr;
+  grid-template-columns: 44px 1fr;
   gap: 6px;
   align-items: start;
   padding: 6px 8px;
@@ -63,7 +63,6 @@ main { max-width: 1000px; margin: 0 auto; }
 }
 .row:nth-child(even) { background: var(--stripe); }
 
-.rank { text-align: right; color: var(--muted); font-size: 13px; padding-top: 2px; }
 .score { text-align: center; font-weight: 700; color: var(--accent); padding-top: 2px; }
 .score.none { color: var(--muted); font-weight: 400; }
 
@@ -94,6 +93,6 @@ main { max-width: 1000px; margin: 0 auto; }
 .empty { padding: 24px; color: var(--muted); }
 
 @media (max-width: 800px) {
-  .row { grid-template-columns: 26px 36px 1fr; padding: 6px 6px; }
+  .row { grid-template-columns: 36px 1fr; padding: 6px 6px; }
   .meta { display: none; }
 }
