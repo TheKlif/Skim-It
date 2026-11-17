@@ -1,0 +1,172 @@
+# Skim-it feeds. One entry per feed.
+# type: rss (fetched in step 1) or api (kept here, skipped in step 1)
+# Entries whose url contains a {placeholder} are skipped until filled in.
+
+- name: "Kagi Small Web"
+  url: "https://kagi.com/api/v1/smallweb/feed/"
+  type: rss
+  label: "Small Web"
+  has_score: false
+  has_comments: false
+  notes: "Fetched live. Newest entry Nov 12 in my copy, possibly cached."
+
+- name: "Kagi Comics"
+  url: "https://kagi.com/api/v1/smallweb/feed/?comic"
+  type: rss
+  label: "Comics"
+  has_score: false
+  has_comments: false
+  notes: "Linked on Kagi's page, not fetched."
+
+- name: "Kagi Videos"
+  url: "https://kagi.com/api/v1/smallweb/feed/?yt"
+  type: rss
+  label: "Videos"
+  has_score: false
+  has_comments: false
+  notes: "Linked on Kagi's page, not fetched."
+
+- name: "Hacker News"
+  url: "https://hn.algolia.com/api/v1/search?tags=front_page"
+  type: api
+  label: "Tech"
+  has_score: true
+  has_comments: true
+  notes: "Documented, not fetched. Comment tree via /api/v1/items/{id}. RSS fallback seen elsewhere: https://news.ycombinator.com/rss"
+
+- name: "Lemmy World All"
+  url: "https://lemmy.world/api/v3/post/list?type_=All&sort=Active"
+  type: api
+  label: "General"
+  has_score: true
+  has_comments: true
+  notes: "CORS mixed. RSS fallback (Local only): https://lemmy.world/feeds/local.xml?sort=TopDay"
+
+- name: "PieFed All"
+  url: "https://piefed.social/api/alpha/post/list"
+  type: api
+  label: "General"
+  has_score: true
+  has_comments: true
+  notes: "Spec seen at /api/alpha/swagger.json. This exact endpoint path is unconfirmed. Not Lemmy v3 compatible."
+
+- name: "Mastodon #mastoart"
+  url: "https://mastodon.social/api/v1/timelines/tag/mastoart"
+  type: api
+  label: "Art"
+  has_score: true
+  has_comments: true
+  notes: "Tag timelines usually open. Replies via /api/v1/statuses/{id}/context."
+
+- name: "Mastodon #woodworking"
+  url: "https://mastodon.social/api/v1/timelines/tag/woodworking"
+  type: api
+  label: "DIY"
+  has_score: true
+  has_comments: true
+  notes: "Tag volume unknown."
+
+- name: "Mastodon #gardening"
+  url: "https://mastodon.social/api/v1/timelines/tag/gardening"
+  type: api
+  label: "Nature"
+  has_score: true
+  has_comments: true
+  notes: "Tag volume unknown."
+
+- name: "Bluesky What's Hot"
+  url: "https://public.api.bsky.app/xrpc/app.bsky.feed.getFeed?feed=at://did:plc:z72i7hdynmk6r22z27h6tvur/app.bsky.feed.generator/whats-hot"
+  type: api
+  label: "General"
+  has_score: true
+  has_comments: true
+  notes: "No auth. Thread via app.bsky.feed.getPostThread."
+
+- name: "Bear Blog Discover (newest)"
+  url: "https://bearblog.dev/discover/feed/?newest=True"
+  type: rss
+  label: "Blogs"
+  has_score: false
+  has_comments: false
+  notes: "Documented, not fetched. Trending is /discover/feed/."
+
+- name: "Bubbles"
+  url: "https://bubbles.town/rss"
+  type: rss
+  label: "Blogs"
+  has_score: false
+  has_comments: false
+  notes: "Page listing the feeds, not a feed itself. Individual feed URLs and topic filters to be pulled from it."
+
+- name: "MetaFilter"
+  url: "https://rss.metafilter.com/metafilter.rss"
+  type: rss
+  label: "General"
+  has_score: false
+  has_comments: false
+  notes: "From MeFi FAQ, not fetched. Per-thread comment RSS exists, flat."
+
+- name: "MetaFilter Projects"
+  url: "https://rss.metafilter.com/projects.rss"
+  type: rss
+  label: "Showcase"
+  has_score: false
+  has_comments: false
+  notes: "Best hobby showcase source on the list."
+
+- name: "Ask MetaFilter"
+  url: "https://rss.metafilter.com/ask.rss"
+  type: rss
+  label: "Q&A"
+  has_score: false
+  has_comments: false
+  notes: "Long advice threads."
+
+- name: "Lobsters Hottest"
+  url: "https://lobste.rs/hottest.json"
+  type: api
+  label: "Tech"
+  has_score: true
+  has_comments: true
+  notes: "Fields include score and comment_count. RSS fallback: https://lobste.rs/rss"
+
+- name: "Tildes"
+  url: "https://tildes.net/topics.atom"
+  type: rss
+  label: "Hobbies and Creative"
+  has_score: false
+  has_comments: false
+  notes: "Per-group feeds: https://tildes.net/~{group}/topics.atom. Link topics open the external link."
+
+- name: "itch.io devlogs"
+  url: "https://{user}.itch.io/{project}/devlog.rss"
+  type: rss
+  label: "Gaming"
+  has_score: false
+  has_comments: false
+  notes: "Template. Needs hand-picked projects. Excerpts only. Skipped until filled."
+
+- name: "ooh.directory"
+  url: "https://ooh.directory/{category-opml-path}"
+  type: rss
+  label: "Blogs by topic"
+  has_score: false
+  has_comments: false
+  notes: "Placeholder. Import category OPML once the URL pattern is found. Skipped until filled."
+
+- name: "Tumblr blogs"
+  url: "https://{blog}.tumblr.com/rss"
+  type: rss
+  label: "Hobby blogs"
+  has_score: false
+  has_comments: false
+  notes: "Template, unconfirmed. Tag feeds only within one blog: /tagged/{tag}/rss. Skipped until filled."
+
+- name: "Flickr tag"
+  url: "https://www.flickr.com/services/feeds/photos_public.gne?tags={tag}&format=rss2"
+  type: rss
+  label: "Photography"
+  has_score: false
+  has_comments: false
+  notes: "Template, from memory, unconfirmed. Skipped until filled."
+  
