@@ -12,10 +12,15 @@
 <body>
   <header>
     <span class="brand">Skim-it</span>
-    <nav><span class="tab active">New</span></nav>
+    <nav class="views" aria-label="View">
+      <button type="button" id="tab-list" class="tab" aria-pressed="true">List</button>
+      <button type="button" id="tab-swipe" class="tab" aria-pressed="false">Swipe</button>
+    </nav>
     <span id="meta" class="meta"></span>
   </header>
   <main id="list"></main>
+  <section id="swipe" hidden></section>
+  <div id="live" class="sr-only" role="status" aria-live="polite"></div>
   <script src="app.js"></script>
 </body>
 </html>
