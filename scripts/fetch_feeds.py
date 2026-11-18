@@ -15,15 +15,16 @@ import feedparser
 import requests
 import yaml
 
-KEEP_DAYS = 14
-MAX_ITEMS = 3000
+SETTINGS_PATH = "settings.yml"
+DEFAULT_SETTINGS = {"max_items": 64, "per_source_max": 6, "keep_days": 14, "preview_cap": 40}
 PER_FEED = 100
 TIMEOUT = 25
-OG_CAP = 40
 OG_TIMEOUT = 10
 OG_WORKERS = 8
 OG_MAX_BYTES = 262144
-EXCERPT_LEN = 250
+EXCERPT_LEN = 1000
+SHORT_EXCERPT = 400
+MIN_PARAGRAPH = 60
 USER_AGENT = "Mozilla/5.0 (compatible; Skim-it feed fetcher)"
 PAGE_HEADERS = {"User-Agent": USER_AGENT, "Accept": "text/html,application/xhtml+xml"}
 ITEMS_PATH = "data/items.json"
@@ -34,6 +35,24 @@ VIDEO_HOSTS = {"youtube.com", "youtu.be", "vimeo.com", "dailymotion.com"}
 AUDIO_HOSTS = {"soundcloud.com", "bandcamp.com", "spotify.com"}
 IMAGE_HOSTS = {"flickr.com"}
 IMAGE_EXTENSIONS = (".jpg", ".jpeg", ".png", ".gif", ".webp", ".avif")
+SKIP_TAGS = {"script", "style", "noscript", "nav", "header", "footer", "aside", "form"}
+
+
+def load_settings():
+    """Read settings.yml, falling back to defaults for anything missing or invalid."""
+    settings = dict(DEFAULT_SETTINGS)
+    try:
+        with open(SETTINGS_PATH, encoding="utf-8") as handle:
+            loaded = yaml.safe_load(handle)
+    except (OSError, yaml.YAMLError):
+        return settings
+    if not isinstance(loaded, dict):
+        return settings
+    for key in DEFAULT_SETTINGS:
+        value = loaded.get(key)
+        if isinstance(value, int) and not isinstance(value, bool) and value > 0:
+            settings[key] = value
+    return settings
 
 
 def iso(moment):
@@ -195,10 +214,15 @@ def extract_thumb(entry, link):
 
 
 def text_from_html(markup):
-    """Strip tags from markup and collapse whitespace."""
+    """Strip tags from markup, keeping paragraph breaks as blank lines."""
     text = re.sub(r"<(script|style)\b.*?</\1>", " ", markup, flags=re.I | re.S)
+    text = re.sub(r"</(?:p|div|li|h[1-6]|blockquote)>|<br\s*/?>", "\n\n", text, flags=re.I)
     text = re.sub(r"<[^>]+>", " ", text)
-    return re.sub(r"\s+", " ", html.unescape(text)).strip()
+    text = html.unescape(text)
+    text = re.sub(r"[ \t\r\f\v]+", " ", text)
+    text = re.sub(r" ?\n ?", "\n", text)
+    text = re.sub(r"\n{3,}", "\n\n", text)
+    return text.strip()
 
 
 def shorten(text, limit=EXCERPT_LEN):
@@ -206,11 +230,11 @@ def shorten(text, limit=EXCERPT_LEN):
     if len(text) <= limit:
         return text
     cut = text[:limit].rsplit(" ", 1)[0]
-    return cut.rstrip(" ,;:.-") + "\u2026"
+    return cut.rstrip(" ,;:.-\n") + "\u2026"
 
 
 def extract_excerpt(entry, title):
-    """Return a short plain text excerpt from the entry, or None."""
+    """Return a plain text excerpt from the entry, or None."""
     contents = " ".join(block.get("value") or "" for block in entry.get("content") or [])
     for markup in (entry.get("summary") or "", contents):
         text = text_from_html(markup)
@@ -234,21 +258,45 @@ def merge_existing(existing, entry, link, title, feed_url, feed_name):
 
 
 class MetaParser(HTMLParser):
-    """Collect meta tags from a page so the preview image and description can be read."""
+    """Collect meta tags and the first article paragraphs from a page."""
 
     def __init__(self):
         super().__init__()
         self.found = {}
+        self.paragraphs = []
+        self.size = 0
+        self.skip_depth = 0
+        self.buffer = None
 
     def handle_starttag(self, tag, attrs):
-        """Store each meta tag's content under its property or name."""
-        if tag != "meta":
+        """Store meta tags and start collecting paragraph text."""
+        if tag == "meta":
+            values = {key.lower(): (value or "") for key, value in attrs if key}
+            name = (values.get("property") or values.get("name") or "").lower()
+            content = values.get("content", "").strip()
+            if content and name not in self.found:
+                self.found[name] = content
             return
-        values = {key.lower(): (value or "") for key, value in attrs if key}
-        name = (values.get("property") or values.get("name") or "").lower()
-        content = values.get("content", "").strip()
-        if content and name not in self.found:
-            self.found[name] = content
+        if tag in SKIP_TAGS:
+            self.skip_depth += 1
+        elif tag == "p" and not self.skip_depth and self.size < EXCERPT_LEN:
+            self.buffer = []
+
+    def handle_data(self, data):
+        """Add text to the paragraph being collected."""
+        if self.buffer is not None:
+            self.buffer.append(data)
+
+    def handle_endtag(self, tag):
+        """Finish a paragraph and keep it if it looks like real content."""
+        if tag in SKIP_TAGS:
+            self.skip_depth = max(0, self.skip_depth - 1)
+        elif tag == "p" and self.buffer is not None:
+            text = re.sub(r"\s+", " ", "".join(self.buffer)).strip()
+            self.buffer = None
+            if len(text) >= MIN_PARAGRAPH and "cookie" not in text.lower():
+                self.paragraphs.append(text)
+                self.size += len(text)
 
     @property
     def image(self):
@@ -266,10 +314,15 @@ class MetaParser(HTMLParser):
                 return self.found[name]
         return None
 
+    @property
+    def page_text(self):
+        """Return the collected paragraphs joined with blank lines."""
+        return "\n\n".join(self.paragraphs)
+
 
 def fetch_page_meta(item):
-    """Fetch one page and return its preview image and description."""
-    result = {"id": item["id"], "image": None, "description": None, "error": None}
+    """Fetch one page and return its preview image, description and opening text."""
+    result = {"id": item["id"], "image": None, "description": None, "text": None, "error": None}
     try:
         response = requests.get(item["link"], headers=PAGE_HEADERS, timeout=OG_TIMEOUT, stream=True)
         response.raise_for_status()
@@ -287,21 +340,30 @@ def fetch_page_meta(item):
             result["image"] = clean_url(urljoin(response.url, parser.image))
         if parser.description:
             result["description"] = shorten(re.sub(r"\s+", " ", parser.description).strip())
+        if parser.page_text:
+            result["text"] = shorten(parser.page_text)
     except Exception as error:  # a failing page must never stop the run
         result["error"] = str(error)[:200]
     return result
 
 
-def add_page_previews(kept):
-    """Fetch preview data for a capped batch of the newest items that lack a thumbnail."""
-    candidates = [
-        item for item in kept
-        if not item.get("thumb") and not item.get("og_tried") and item.get("link")
-    ]
+def needs_preview(item):
+    """Return True if an item should get a page fetch for an image or longer excerpt."""
+    if item.get("og_tried") or not item.get("link"):
+        return False
+    if item.get("type") == "video" and item.get("thumb"):
+        return False
+    return not item.get("thumb") or len(item.get("excerpt") or "") < SHORT_EXCERPT
+
+
+def add_page_previews(kept, cap):
+    """Fetch page data for a capped batch of the newest items that need it."""
+    candidates = [item for item in kept if needs_preview(item)]
     candidates.sort(key=lambda item: item["published"], reverse=True)
-    batch = candidates[:OG_CAP]
+    batch = candidates[:cap]
     by_id = {item["id"]: item for item in batch}
-    found = 0
+    images = 0
+    texts = 0
     failed = 0
     with ThreadPoolExecutor(max_workers=OG_WORKERS) as pool:
         results = list(pool.map(fetch_page_meta, batch))
@@ -310,18 +372,36 @@ def add_page_previews(kept):
         item["og_tried"] = True
         if result["error"]:
             failed += 1
-        if result["image"]:
+        if result["image"] and not item.get("thumb"):
             item["thumb"] = result["image"]
-            found += 1
-        if result["description"] and not item.get("excerpt"):
-            item["excerpt"] = result["description"]
-    return {"attempted": len(batch), "found": found, "failed": failed,
+            images += 1
+        page_text = result["text"] or result["description"]
+        current = item.get("excerpt") or ""
+        if page_text and (not current or len(page_text) > len(current) + 100):
+            item["excerpt"] = page_text
+            texts += 1
+    return {"attempted": len(batch), "images": images, "excerpts": texts, "failed": failed,
             "remaining": len(candidates) - len(batch)}
+
+
+def limit_items(items, per_source_max, max_items):
+    """Apply the per source cap and the total cap to newest-first items."""
+    counts = {}
+    limited = []
+    for item in items:
+        count = counts.get(item["source"], 0)
+        if count >= per_source_max:
+            continue
+        counts[item["source"]] = count + 1
+        limited.append(item)
+    return limited[:max_items]
 
 
 def main():
     """Run one fetch pass."""
     now = datetime.now(timezone.utc)
+    settings = load_settings()
+    print("Settings:", settings)
     with open("feeds.yml", encoding="utf-8") as handle:
         feeds = yaml.safe_load(handle) or []
 
@@ -388,12 +468,12 @@ def main():
                             "last_success": last_success}
             print("FAILED", name, error)
 
-    cutoff = now - timedelta(days=KEEP_DAYS)
-    kept = [item for item in items.values() if parse_iso(item["first_seen"]) >= cutoff]
-    kept.sort(key=lambda item: item["published"], reverse=True)
-    kept = kept[:MAX_ITEMS]
+    cutoff = now - timedelta(days=settings["keep_days"])
+    fresh = [item for item in items.values() if parse_iso(item["first_seen"]) >= cutoff]
+    fresh.sort(key=lambda item: item["published"], reverse=True)
+    kept = limit_items(fresh, settings["per_source_max"], settings["max_items"])
 
-    previews = add_page_previews(kept)
+    previews = add_page_previews(kept, settings["preview_cap"])
     print("Previews:", previews)
 
     for name, entry_status in status.items():

@@ -1,0 +1,14 @@
+# Skim-it settings. Edit a number, save, push.
+# Anything missing or invalid falls back to the default shown.
+
+# Most items kept in total after each fetch.
+max_items: 64
+
+# Most items kept from any single feed.
+per_source_max: 6
+
+# Items older than this many days (counted from first seen) are dropped.
+keep_days: 14
+
+# Most pages opened per run to look for preview images and longer excerpts.
+preview_cap: 40

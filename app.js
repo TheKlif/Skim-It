@@ -1,5 +1,10 @@
 const STATE_KEY = "skimit.state";
 const VIEW_KEY = "skimit.view";
+const TOKEN_KEY = "skimit.dispatchToken";
+const WORKFLOW_FILE = "fetch.yml";
+const STATE_LIMIT = 2000;
+const POLL_MS = 15000;
+const POLL_MAX_MS = 300000;
 
 const listEl = document.getElementById("list");
 const swipeEl = document.getElementById("swipe");
@@ -7,6 +12,7 @@ const metaEl = document.getElementById("meta");
 const liveEl = document.getElementById("live");
 const tabList = document.getElementById("tab-list");
 const tabSwipe = document.getElementById("tab-swipe");
+const refreshBtn = document.getElementById("reload");
 const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
 const GLYPHS = {
@@ -28,6 +34,7 @@ let state = {};
 let view = "list";
 let detailId = null;
 let busy = false;
+let refreshing = false;
 const undoStack = [];
 
 function readStore(key, fallback) {
@@ -45,6 +52,13 @@ function writeStore(key, value) {
   } catch (error) {
     /* storage unavailable, state lasts for this page load only */
   }
+}
+
+function trimState() {
+  const ids = Object.keys(state);
+  if (ids.length <= STATE_LIMIT) return;
+  ids.slice(0, ids.length - STATE_LIMIT).forEach((id) => delete state[id]);
+  writeStore(STATE_KEY, state);
 }
 
 function setState(id, value) {
@@ -393,7 +407,7 @@ function buildDetail(item) {
 function renderSwipe() {
   swipeEl.textContent = "";
   metaEl.textContent = "";
-  let detailItem = detailId ? items.find((entry) => entry.id === detailId) : null;
+  const detailItem = detailId ? items.find((entry) => entry.id === detailId) : null;
   if (detailId && !detailItem) detailId = null;
 
   const wrap = make("div", "swipe-wrap");
@@ -449,21 +463,129 @@ document.addEventListener("keydown", (event) => {
 tabList.addEventListener("click", () => setView("list"));
 tabSwipe.addEventListener("click", () => setView("swipe"));
 
-async function load() {
-  state = readStore(STATE_KEY, {});
+async function loadItems() {
   try {
-    const response = await fetch("data/items.json", { cache: "no-cache" });
+    const response = await fetch("data/items.json?t=" + Date.now(), { cache: "no-store" });
+    if (!response.ok) throw new Error("HTTP " + response.status);
     const data = await response.json();
     updatedAt = data.updated || "";
     items = (data.items || []).slice().sort((a, b) => b.published.localeCompare(a.published));
-    if (items.length) {
-      const ids = new Set(items.map((item) => item.id));
-      Object.keys(state).forEach((id) => {
-        if (!ids.has(id)) delete state[id];
-      });
-      writeStore(STATE_KEY, state);
-    }
+    return true;
   } catch (error) {
+    return false;
+  }
+}
+
+async function reloadData() {
+  announce("Reloading");
+  const ok = await loadItems();
+  if (!ok) {
+    announce("Could not reload");
+    return;
+  }
+  detailId = null;
+  setView(view);
+  announce("Updated, " + items.length + " items");
+}
+
+function repoInfo() {
+  const parts = location.pathname.split("/").filter(Boolean);
+  const first = parts[0] || "";
+  if (!location.hostname.endsWith(".github.io") || !first || first === "index.html") return null;
+  return { owner: location.hostname.split(".")[0], repo: first };
+}
+
+async function dispatchWorkflow(token, info) {
+  const url = "https://api.github.com/repos/" + info.owner + "/" + info.repo +
+    "/actions/workflows/" + WORKFLOW_FILE + "/dispatches";
+  for (const ref of ["main", "master"]) {
+    const response = await fetch(url, {
+      method: "POST",
+      headers: {
+        Accept: "application/vnd.github+json",
+        Authorization: "Bearer " + token,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ ref: ref }),
+    });
+    if (response.status === 204) return { ok: true, status: 204 };
+    if (response.status !== 422) return { ok: false, status: response.status };
+  }
+  return { ok: false, status: 422 };
+}
+
+function pause(ms) {
+  return new Promise((resolve) => setTimeout(resolve, ms));
+}
+
+async function refreshData() {
+  if (refreshing) return;
+  const info = repoInfo();
+  if (!info) {
+    await reloadData();
+    return;
+  }
+  let token = readStore(TOKEN_KEY, "");
+  if (!token) {
+    const entered = window.prompt(
+      "Paste a GitHub token to enable Refresh on this device. Cancel to just reload the data.", "");
+    if (!entered || !entered.trim()) {
+      await reloadData();
+      return;
+    }
+    token = entered.trim();
+    writeStore(TOKEN_KEY, token);
+  }
+
+  refreshing = true;
+  refreshBtn.textContent = "Refreshing\u2026";
+  announce("Starting refresh");
+  try {
+    const before = updatedAt;
+    let result;
+    try {
+      result = await dispatchWorkflow(token, info);
+    } catch (error) {
+      result = { ok: false, status: 0 };
+    }
+    if (!result.ok) {
+      if (result.status === 401 || result.status === 403) {
+        writeStore(TOKEN_KEY, "");
+        window.alert("GitHub rejected the token, so it was removed. Press Refresh to paste a new one.");
+      } else if (result.status === 404) {
+        window.alert("GitHub could not find the repo or the fetch workflow, or the token has no access to this repo.");
+      } else if (result.status === 422) {
+        window.alert("No fetch workflow was found on the main or master branch.");
+      } else {
+        window.alert("Could not reach GitHub.");
+      }
+      return;
+    }
+    const started = Date.now();
+    while (Date.now() - started < POLL_MAX_MS) {
+      await pause(POLL_MS);
+      const ok = await loadItems();
+      if (ok && updatedAt !== before) {
+        detailId = null;
+        setView(view);
+        announce("Updated, " + items.length + " items");
+        return;
+      }
+    }
+    window.alert("The fetch was started, but new data has not appeared yet. Try Refresh again in a minute.");
+  } finally {
+    refreshing = false;
+    refreshBtn.textContent = "Refresh";
+  }
+}
+
+refreshBtn.addEventListener("click", refreshData);
+
+async function load() {
+  state = readStore(STATE_KEY, {});
+  trimState();
+  const ok = await loadItems();
+  if (!ok) {
     listEl.appendChild(make("div", "empty", "Could not load data/items.json."));
     return;
   }

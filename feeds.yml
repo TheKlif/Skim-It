@@ -1,5 +1,5 @@
 # Skim-it feeds. One entry per feed.
-# type: rss (fetched in step 1) or api (kept here, skipped in step 1)
+# type: rss (fetched in step 1) or api (kept here, skipped until the API step)
 # Entries whose url contains a {placeholder} are skipped until filled in.
 
 - name: "Kagi Small Web"
@@ -88,15 +88,15 @@
   label: "Blogs"
   has_score: false
   has_comments: false
-  notes: "Documented, not fetched. Trending is /discover/feed/."
+  notes: "Fetched OK on first run. Trending is /discover/feed/."
 
 - name: "Bubbles"
-  url: "https://bubbles.town/rss"
+  url: "https://bubbles.town/feed/new"
   type: rss
   label: "Blogs"
   has_score: false
   has_comments: false
-  notes: "Page listing the feeds, not a feed itself. Individual feed URLs and topic filters to be pulled from it."
+  notes: "Replaces the old listing page URL, which failed. Full-text variant: /feed/full. High volume."
 
 - name: "MetaFilter"
   url: "https://rss.metafilter.com/metafilter.rss"
@@ -104,7 +104,7 @@
   label: "General"
   has_score: false
   has_comments: false
-  notes: "From MeFi FAQ, not fetched. Per-thread comment RSS exists, flat."
+  notes: "Per-thread comment RSS exists, flat."
 
 - name: "MetaFilter Projects"
   url: "https://rss.metafilter.com/projects.rss"
@@ -138,13 +138,21 @@
   has_comments: false
   notes: "Per-group feeds: https://tildes.net/~{group}/topics.atom. Link topics open the external link."
 
+- name: "itch.io Featured"
+  url: "https://itch.io/feed/featured.xml"
+  type: rss
+  label: "Gaming"
+  has_score: false
+  has_comments: false
+  notes: "Game listings, not devlogs. Other global feeds: /feed/new.xml and /feed/sales.xml. Any browse page works with .xml added."
+
 - name: "itch.io devlogs"
   url: "https://{user}.itch.io/{project}/devlog.rss"
   type: rss
   label: "Gaming"
   has_score: false
   has_comments: false
-  notes: "Template. Needs hand-picked projects. Excerpts only. Skipped until filled."
+  notes: "Template. One entry per hand-picked project. Skipped until filled."
 
 - name: "ooh.directory"
   url: "https://ooh.directory/{category-opml-path}"
@@ -152,7 +160,7 @@
   label: "Blogs by topic"
   has_score: false
   has_comments: false
-  notes: "Placeholder. Import category OPML once the URL pattern is found. Skipped until filled."
+  notes: "Per-category OPML exists but the URL pattern is unconfirmed. OPML needs its own entry type. Skipped until decided."
 
 - name: "Tumblr blogs"
   url: "https://{blog}.tumblr.com/rss"
@@ -160,13 +168,12 @@
   label: "Hobby blogs"
   has_score: false
   has_comments: false
-  notes: "Template, unconfirmed. Tag feeds only within one blog: /tagged/{tag}/rss. Skipped until filled."
+  notes: "Confirmed pattern. Per tag: /tagged/{tag}/rss. No site-wide tag feed. Skipped until filled."
 
 - name: "Flickr tag"
-  url: "https://www.flickr.com/services/feeds/photos_public.gne?tags={tag}&format=rss2"
+  url: "https://www.flickr.com/services/feeds/photos_public.gne?tags={tag}&format=rss_200"
   type: rss
   label: "Photography"
   has_score: false
   has_comments: false
-  notes: "Template, from memory, unconfirmed. Skipped until filled."
-  
+  notes: "Documented pattern. One entry per tag. Skipped until filled."

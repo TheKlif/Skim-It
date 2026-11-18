@@ -5,7 +5,7 @@
   --link-hover: var(--accent);
   --muted: rgba(240, 235, 224, 0.6);
   --line: rgba(240, 235, 224, 0.2);
-  --stripe: rgba(240, 235, 224, 0.05);
+  --panel: rgba(240, 235, 224, 0.07);
   --bar: rgba(0, 0, 0, 0.25);
   --well: rgba(240, 235, 224, 0.08);
 }
@@ -80,10 +80,19 @@ header {
   cursor: pointer;
 }
 .tab[aria-pressed="true"] { background: var(--accent); color: var(--bg); font-weight: 700; }
+.reload:hover { color: var(--accent); }
 
 .meta { margin-left: auto; font-size: 12px; color: var(--muted); }
 
-main { max-width: 1000px; margin: 0 auto; }
+main {
+  max-width: 1000px;
+  width: calc(100% - 20px);
+  margin: 10px auto;
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  overflow: hidden;
+}
 
 .row {
   display: grid;
@@ -93,7 +102,7 @@ main { max-width: 1000px; margin: 0 auto; }
   padding: 6px 8px;
   border-bottom: 1px solid var(--line);
 }
-.row:nth-child(even) { background: var(--stripe); }
+.row:last-child { border-bottom: 0; }
 .row.read { opacity: 0.6; }
 .row.dismissed { opacity: 0.4; }
 
@@ -146,7 +155,7 @@ main { max-width: 1000px; margin: 0 auto; }
 
 .card,
 .detail {
-  background: var(--stripe);
+  background: var(--panel);
   border: 1px solid var(--line);
   border-radius: 12px;
   padding: 10px;
@@ -253,7 +262,7 @@ main { max-width: 1000px; margin: 0 auto; }
 }
 .back-btn:hover { color: var(--accent); }
 
-.detail-excerpt { font-size: 15px; line-height: 1.5; margin: 10px 0 8px; }
+.detail-excerpt { font-size: 15px; line-height: 1.5; margin: 10px 0 8px; white-space: pre-line; }
 
 .actions { display: flex; gap: 8px; margin-top: 12px; }
 
@@ -285,4 +294,5 @@ main { max-width: 1000px; margin: 0 auto; }
   .row { grid-template-columns: 36px 60px 1fr; gap: 6px; padding: 6px; }
   .thumb { width: 60px; height: 45px; }
   .meta { display: none; }
+  .reload { margin-left: auto; }
 }
