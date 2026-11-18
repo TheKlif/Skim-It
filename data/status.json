@@ -1,23 +1,35 @@
 {
-  "updated": "2026-11-17T21:51:21Z",
+  "updated": "2026-11-18T06:42:56Z",
+  "previews": {
+    "attempted": 40,
+    "found": 32,
+    "failed": 7,
+    "remaining": 229
+  },
   "feeds": {
     "Kagi Small Web": {
       "status": "ok",
       "items": 100,
-      "new": 100,
-      "last_success": "2026-11-17T21:51:21Z"
+      "new": 0,
+      "last_success": "2026-11-18T06:42:56Z",
+      "stored": 100,
+      "with_thumb": 6
     },
     "Kagi Comics": {
       "status": "ok",
       "items": 100,
-      "new": 100,
-      "last_success": "2026-11-17T21:51:21Z"
+      "new": 5,
+      "last_success": "2026-11-18T06:42:56Z",
+      "stored": 105,
+      "with_thumb": 54
     },
     "Kagi Videos": {
       "status": "ok",
       "items": 100,
-      "new": 99,
-      "last_success": "2026-11-17T21:51:21Z"
+      "new": 0,
+      "last_success": "2026-11-18T06:42:56Z",
+      "stored": 99,
+      "with_thumb": 99
     },
     "Hacker News": {
       "status": "skipped",
@@ -58,30 +70,40 @@
       "status": "ok",
       "items": 20,
       "new": 20,
-      "last_success": "2026-11-17T21:51:21Z"
+      "last_success": "2026-11-18T06:42:56Z",
+      "stored": 40,
+      "with_thumb": 30
     },
     "Bubbles": {
       "status": "failed",
       "error": "no entries parsed",
-      "last_success": null
+      "last_success": null,
+      "stored": 0,
+      "with_thumb": 0
     },
     "MetaFilter": {
       "status": "ok",
-      "items": 13,
-      "new": 13,
-      "last_success": "2026-11-17T21:51:21Z"
+      "items": 12,
+      "new": 3,
+      "last_success": "2026-11-18T06:42:56Z",
+      "stored": 16,
+      "with_thumb": 0
     },
     "MetaFilter Projects": {
       "status": "ok",
       "items": 20,
-      "new": 20,
-      "last_success": "2026-11-17T21:51:21Z"
+      "new": 0,
+      "last_success": "2026-11-18T06:42:56Z",
+      "stored": 20,
+      "with_thumb": 0
     },
     "Ask MetaFilter": {
       "status": "ok",
-      "items": 8,
-      "new": 8,
-      "last_success": "2026-11-17T21:51:21Z"
+      "items": 6,
+      "new": 3,
+      "last_success": "2026-11-18T06:42:56Z",
+      "stored": 11,
+      "with_thumb": 0
     },
     "Lobsters Hottest": {
       "status": "skipped",
@@ -91,8 +113,10 @@
     "Tildes": {
       "status": "ok",
       "items": 50,
-      "new": 50,
-      "last_success": "2026-11-17T21:51:21Z"
+      "new": 4,
+      "last_success": "2026-11-18T06:42:56Z",
+      "stored": 54,
+      "with_thumb": 19
     },
     "itch.io devlogs": {
       "status": "skipped",
