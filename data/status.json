@@ -1,10 +1,10 @@
 {
-  "updated": "2026-11-18T17:53:48Z",
+  "updated": "2026-11-19T00:04:18Z",
   "previews": {
-    "attempted": 23,
-    "images": 8,
-    "excerpts": 11,
-    "failed": 5,
+    "attempted": 31,
+    "images": 13,
+    "excerpts": 7,
+    "failed": 14,
     "remaining": 0
   },
   "feeds": {
@@ -12,7 +12,7 @@
       "status": "ok",
       "items": 100,
       "new": 94,
-      "last_success": "2026-11-18T17:53:48Z",
+      "last_success": "2026-11-19T00:04:18Z",
       "stored": 6,
       "with_thumb": 4
     },
@@ -20,15 +20,15 @@
       "status": "ok",
       "items": 100,
       "new": 94,
-      "last_success": "2026-11-18T17:53:48Z",
+      "last_success": "2026-11-19T00:04:18Z",
       "stored": 6,
-      "with_thumb": 5
+      "with_thumb": 6
     },
     "Kagi Videos": {
       "status": "ok",
       "items": 100,
       "new": 94,
-      "last_success": "2026-11-18T17:53:48Z",
+      "last_success": "2026-11-19T00:04:18Z",
       "stored": 6,
       "with_thumb": 6
     },
@@ -71,23 +71,23 @@
       "status": "ok",
       "items": 20,
       "new": 20,
-      "last_success": "2026-11-18T17:53:48Z",
+      "last_success": "2026-11-19T00:04:18Z",
       "stored": 6,
       "with_thumb": 6
     },
     "Bubbles": {
       "status": "ok",
       "items": 100,
-      "new": 96,
-      "last_success": "2026-11-18T17:53:48Z",
+      "new": 95,
+      "last_success": "2026-11-19T00:04:18Z",
       "stored": 6,
-      "with_thumb": 2
+      "with_thumb": 5
     },
     "MetaFilter": {
       "status": "ok",
-      "items": 11,
-      "new": 5,
-      "last_success": "2026-11-18T17:53:48Z",
+      "items": 13,
+      "new": 7,
+      "last_success": "2026-11-19T00:04:18Z",
       "stored": 6,
       "with_thumb": 0
     },
@@ -95,15 +95,15 @@
       "status": "ok",
       "items": 20,
       "new": 14,
-      "last_success": "2026-11-18T17:53:48Z",
+      "last_success": "2026-11-19T00:04:18Z",
       "stored": 6,
       "with_thumb": 0
     },
     "Ask MetaFilter": {
       "status": "ok",
-      "items": 4,
-      "new": 0,
-      "last_success": "2026-11-18T17:53:48Z",
+      "items": 7,
+      "new": 6,
+      "last_success": "2026-11-19T00:04:18Z",
       "stored": 6,
       "with_thumb": 0
     },
@@ -116,7 +116,7 @@
       "status": "ok",
       "items": 50,
       "new": 44,
-      "last_success": "2026-11-18T17:53:48Z",
+      "last_success": "2026-11-19T00:04:18Z",
       "stored": 6,
       "with_thumb": 5
     },
@@ -124,7 +124,7 @@
       "status": "ok",
       "items": 10,
       "new": 4,
-      "last_success": "2026-11-18T17:53:48Z",
+      "last_success": "2026-11-19T00:04:18Z",
       "stored": 6,
       "with_thumb": 6
     },
