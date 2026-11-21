@@ -1,10 +1,10 @@
 {
-  "updated": "2026-11-21T02:01:51Z",
+  "updated": "2026-11-21T10:47:18Z",
   "previews": {
-    "attempted": 27,
-    "images": 10,
-    "excerpts": 7,
-    "failed": 8,
+    "attempted": 13,
+    "images": 9,
+    "excerpts": 5,
+    "failed": 2,
     "remaining": 0
   },
   "feeds": {
@@ -12,7 +12,7 @@
       "status": "ok",
       "items": 100,
       "new": 94,
-      "last_success": "2026-11-21T02:01:51Z",
+      "last_success": "2026-11-21T10:47:18Z",
       "stored": 6,
       "with_thumb": 3
     },
@@ -20,7 +20,7 @@
       "status": "ok",
       "items": 100,
       "new": 94,
-      "last_success": "2026-11-21T02:01:51Z",
+      "last_success": "2026-11-21T10:47:18Z",
       "stored": 6,
       "with_thumb": 6
     },
@@ -28,7 +28,7 @@
       "status": "ok",
       "items": 100,
       "new": 92,
-      "last_success": "2026-11-21T02:01:51Z",
+      "last_success": "2026-11-21T10:47:18Z",
       "stored": 6,
       "with_thumb": 6
     },
@@ -71,23 +71,23 @@
       "status": "ok",
       "items": 20,
       "new": 20,
-      "last_success": "2026-11-21T02:01:51Z",
+      "last_success": "2026-11-21T10:47:18Z",
       "stored": 6,
       "with_thumb": 6
     },
     "Bubbles": {
       "status": "ok",
       "items": 100,
-      "new": 96,
-      "last_success": "2026-11-21T02:01:51Z",
+      "new": 87,
+      "last_success": "2026-11-21T10:47:18Z",
       "stored": 6,
       "with_thumb": 4
     },
     "MetaFilter": {
       "status": "ok",
-      "items": 14,
-      "new": 8,
-      "last_success": "2026-11-21T02:01:51Z",
+      "items": 11,
+      "new": 5,
+      "last_success": "2026-11-21T10:47:18Z",
       "stored": 6,
       "with_thumb": 0
     },
@@ -95,15 +95,15 @@
       "status": "ok",
       "items": 20,
       "new": 14,
-      "last_success": "2026-11-21T02:01:51Z",
+      "last_success": "2026-11-21T10:47:18Z",
       "stored": 6,
       "with_thumb": 0
     },
     "Ask MetaFilter": {
       "status": "ok",
-      "items": 6,
-      "new": 3,
-      "last_success": "2026-11-21T02:01:51Z",
+      "items": 5,
+      "new": 0,
+      "last_success": "2026-11-21T10:47:18Z",
       "stored": 6,
       "with_thumb": 0
     },
@@ -115,8 +115,8 @@
     "Tildes": {
       "status": "ok",
       "items": 50,
-      "new": 44,
-      "last_success": "2026-11-21T02:01:51Z",
+      "new": 46,
+      "last_success": "2026-11-21T10:47:18Z",
       "stored": 6,
       "with_thumb": 6
     },
@@ -124,7 +124,7 @@
       "status": "ok",
       "items": 10,
       "new": 4,
-      "last_success": "2026-11-21T02:01:51Z",
+      "last_success": "2026-11-21T10:47:18Z",
       "stored": 6,
       "with_thumb": 6
     },
