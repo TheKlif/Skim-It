@@ -1,10 +1,10 @@
 {
-  "updated": "2026-11-24T23:48:18Z",
+  "updated": "2026-11-25T07:46:55Z",
   "previews": {
-    "attempted": 38,
-    "images": 15,
-    "excerpts": 11,
-    "failed": 18,
+    "attempted": 13,
+    "images": 9,
+    "excerpts": 3,
+    "failed": 2,
     "remaining": 0
   },
   "feeds": {
@@ -12,7 +12,7 @@
       "status": "ok",
       "items": 100,
       "new": 94,
-      "last_success": "2026-11-24T23:48:18Z",
+      "last_success": "2026-11-25T07:46:55Z",
       "stored": 6,
       "with_thumb": 4
     },
@@ -20,7 +20,7 @@
       "status": "ok",
       "items": 100,
       "new": 94,
-      "last_success": "2026-11-24T23:48:18Z",
+      "last_success": "2026-11-25T07:46:55Z",
       "stored": 6,
       "with_thumb": 4
     },
@@ -28,7 +28,7 @@
       "status": "ok",
       "items": 100,
       "new": 94,
-      "last_success": "2026-11-24T23:48:18Z",
+      "last_success": "2026-11-25T07:46:55Z",
       "stored": 6,
       "with_thumb": 6
     },
@@ -71,23 +71,23 @@
       "status": "ok",
       "items": 20,
       "new": 20,
-      "last_success": "2026-11-24T23:48:18Z",
+      "last_success": "2026-11-25T07:46:55Z",
       "stored": 6,
       "with_thumb": 6
     },
     "Bubbles": {
       "status": "ok",
       "items": 100,
-      "new": 95,
-      "last_success": "2026-11-24T23:48:18Z",
+      "new": 96,
+      "last_success": "2026-11-25T07:46:55Z",
       "stored": 6,
-      "with_thumb": 5
+      "with_thumb": 6
     },
     "MetaFilter": {
       "status": "ok",
-      "items": 15,
-      "new": 9,
-      "last_success": "2026-11-24T23:48:18Z",
+      "items": 12,
+      "new": 6,
+      "last_success": "2026-11-25T07:46:55Z",
       "stored": 6,
       "with_thumb": 0
     },
@@ -95,15 +95,15 @@
       "status": "ok",
       "items": 20,
       "new": 14,
-      "last_success": "2026-11-24T23:48:18Z",
+      "last_success": "2026-11-25T07:46:55Z",
       "stored": 6,
       "with_thumb": 0
     },
     "Ask MetaFilter": {
       "status": "ok",
-      "items": 12,
-      "new": 8,
-      "last_success": "2026-11-24T23:48:18Z",
+      "items": 10,
+      "new": 4,
+      "last_success": "2026-11-25T07:46:55Z",
       "stored": 6,
       "with_thumb": 0
     },
@@ -115,16 +115,16 @@
     "Tildes": {
       "status": "ok",
       "items": 50,
-      "new": 45,
-      "last_success": "2026-11-24T23:48:18Z",
+      "new": 44,
+      "last_success": "2026-11-25T07:46:55Z",
       "stored": 6,
-      "with_thumb": 5
+      "with_thumb": 6
     },
     "itch.io Featured": {
       "status": "ok",
       "items": 10,
       "new": 4,
-      "last_success": "2026-11-24T23:48:18Z",
+      "last_success": "2026-11-25T07:46:55Z",
       "stored": 6,
       "with_thumb": 6
     },
