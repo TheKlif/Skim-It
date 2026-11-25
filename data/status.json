@@ -1,34 +1,34 @@
 {
-  "updated": "2026-11-25T07:46:55Z",
+  "updated": "2026-11-25T19:02:21Z",
   "previews": {
-    "attempted": 13,
-    "images": 9,
-    "excerpts": 3,
-    "failed": 2,
+    "attempted": 35,
+    "images": 16,
+    "excerpts": 11,
+    "failed": 9,
     "remaining": 0
   },
   "feeds": {
     "Kagi Small Web": {
       "status": "ok",
       "items": 100,
-      "new": 94,
-      "last_success": "2026-11-25T07:46:55Z",
+      "new": 98,
+      "last_success": "2026-11-25T19:02:21Z",
       "stored": 6,
       "with_thumb": 4
     },
     "Kagi Comics": {
       "status": "ok",
       "items": 100,
-      "new": 94,
-      "last_success": "2026-11-25T07:46:55Z",
+      "new": 95,
+      "last_success": "2026-11-25T19:02:21Z",
       "stored": 6,
-      "with_thumb": 4
+      "with_thumb": 6
     },
     "Kagi Videos": {
       "status": "ok",
       "items": 100,
-      "new": 94,
-      "last_success": "2026-11-25T07:46:55Z",
+      "new": 95,
+      "last_success": "2026-11-25T19:02:21Z",
       "stored": 6,
       "with_thumb": 6
     },
@@ -71,23 +71,23 @@
       "status": "ok",
       "items": 20,
       "new": 20,
-      "last_success": "2026-11-25T07:46:55Z",
+      "last_success": "2026-11-25T19:02:21Z",
       "stored": 6,
       "with_thumb": 6
     },
     "Bubbles": {
       "status": "ok",
       "items": 100,
-      "new": 96,
-      "last_success": "2026-11-25T07:46:55Z",
+      "new": 93,
+      "last_success": "2026-11-25T19:02:21Z",
       "stored": 6,
-      "with_thumb": 6
+      "with_thumb": 5
     },
     "MetaFilter": {
       "status": "ok",
-      "items": 12,
-      "new": 6,
-      "last_success": "2026-11-25T07:46:55Z",
+      "items": 11,
+      "new": 7,
+      "last_success": "2026-11-25T19:02:21Z",
       "stored": 6,
       "with_thumb": 0
     },
@@ -95,15 +95,15 @@
       "status": "ok",
       "items": 20,
       "new": 14,
-      "last_success": "2026-11-25T07:46:55Z",
+      "last_success": "2026-11-25T19:02:21Z",
       "stored": 6,
       "with_thumb": 0
     },
     "Ask MetaFilter": {
       "status": "ok",
-      "items": 10,
-      "new": 4,
-      "last_success": "2026-11-25T07:46:55Z",
+      "items": 8,
+      "new": 2,
+      "last_success": "2026-11-25T19:02:21Z",
       "stored": 6,
       "with_thumb": 0
     },
@@ -116,14 +116,13 @@
       "status": "ok",
       "items": 50,
       "new": 44,
-      "last_success": "2026-11-25T07:46:55Z",
+      "last_success": "2026-11-25T19:02:21Z",
       "stored": 6,
-      "with_thumb": 6
+      "with_thumb": 5
     },
     "itch.io Featured": {
-      "status": "ok",
-      "items": 10,
-      "new": 4,
+      "status": "failed",
+      "error": "429 Client Error: Too Many Requests for url: https://itch.io/feed/featured.xml",
       "last_success": "2026-11-25T07:46:55Z",
       "stored": 6,
       "with_thumb": 6
